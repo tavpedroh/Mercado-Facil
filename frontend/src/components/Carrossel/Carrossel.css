@@ -1,0 +1,27 @@
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .carousel-item {
+    min-width: 200px;
+    flex-shrink: 0;
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #fff;
+  }
+  
+  .carousel-item img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .carousel-item .discount {
+    color: red;
+    font-weight: bold;
+  }
+  

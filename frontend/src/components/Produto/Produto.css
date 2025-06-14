@@ -1,0 +1,31 @@
+.produto {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #fff;
+  width: 200px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.produto:hover {
+  transform: scale(1.03);
+}
+
+.produto .mercado {
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.produto .desconto {
+  color: red;
+  font-weight: bold;
+  display: block;
+  margin: 0.3rem 0;
+}
+
+.produto .preco {
+  font-size: 1.2rem;
+  font-weight: bold;
+}

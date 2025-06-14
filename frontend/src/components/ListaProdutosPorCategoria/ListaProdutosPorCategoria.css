@@ -1,0 +1,39 @@
+.lista-categorias {
+    padding: 1rem;
+  }
+  
+  .categoria {
+    margin-bottom: 2rem;
+  }
+  
+  .categoria h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .produtos-horizontal {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+    scroll-snap-type: x mandatory;
+  }
+  
+  .produtos-horizontal::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .produtos-horizontal::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+  }
+  
+  .produtos-horizontal::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .produtos-horizontal > * {
+    scroll-snap-align: start;
+    flex: 0 0 auto;
+  }
+  

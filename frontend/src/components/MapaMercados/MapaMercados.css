@@ -1,0 +1,22 @@
+.mapa-mercados {
+    padding: 2rem;
+    background-color: #f2f2f2;
+  }
+  
+  .mapa-mercados h2 {
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+  }
+  
+  .mapa-placeholder {
+    background-color: #d9d9d9;
+    height: 300px;
+    border: 2px dashed #aaa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    font-size: 1.2rem;
+    border-radius: 10px;
+  }
+  
