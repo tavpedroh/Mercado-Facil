@@ -1,4 +1,13 @@
 {
+  "name": "MercadoFacil",
+
+  "scripts": {
+    "frontend": "cd frontend && npm run start && npm run dev",
+    "backend": "cd backend && npm run start && npm run dev",
+    "start": " npm run frontend && npm run backend",
+    "clear-backend": "cd backend && npm run clear",
+    "clear-frontend": "cd frontend && npm run clear"
+  },
   "devDependencies": {
     "typescript": "^5.8.3"
   },

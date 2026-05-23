@@ -1,10 +1,10 @@
 import express from "express";
 import Produto from "../models/Produto";
 
-const router = express.Router();
+const routerP = express.Router();
 
 
-router.get("/produtos", async (req, res) => {
+routerP.get("/produtos", async (req, res) => {
   try {
     const produtos = await Produto.find();
     res.json(produtos);
@@ -14,7 +14,7 @@ router.get("/produtos", async (req, res) => {
 });
 
 
-router.post("/produtos", async (req, res) => {
+routerP.post("/produtos", async (req, res) => {
   try {
     const novoProduto = new Produto(req.body);
     await novoProduto.save();
@@ -24,4 +24,5 @@ router.post("/produtos", async (req, res) => {
   }
 });
 
-export default router;
+
+export default routerP;

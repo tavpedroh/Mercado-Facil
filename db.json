@@ -1,0 +1,66 @@
+{
+"Produtos": [
+        {
+            "_id": "6a0f357b57151b8a195363e1",
+            "nome": "Coca-Cola",
+            "descricao": "Refrigerante",
+            "preco": 11,
+            "desconto": 10,
+            "categoria_id": "2", 
+            "mercado_id": "2",
+            "criadoEm": "2026-05-21T16:40:27.234Z",
+            "__v": 0
+        },
+        {
+            "_id": "6a107b7208b2b81e99658eb2",
+            "nome": "Batata Frita",
+            "descricao": "Batata Frita para AirFryer",
+            "preco": 87.5,
+            "desconto": 18,
+            "categoria": "Alimentos",
+            "mercado": "Mercado A",
+            "criadoEm": "2026-05-22T15:51:14.476Z",
+            "__v": 0
+        },
+        {
+            "_id": "6a107c6208b2b81e99658eb6",
+            "nome": "Pasta de Dente",
+            "descricao": "Pasta de Dente Colgate",
+            "preco": 14.99,
+            "desconto": 0,
+            "categoria": "Higiene",
+            "mercado": "Mercado C",
+            "criadoEm": "2026-05-22T15:55:14.478Z",
+            "__v": 0
+        }
+    ],
+"categorias": [
+        { 
+        "_id": "1",
+        "nome": "Alimentos"
+        },
+        {
+            "_id": "2",
+            "nome": "Bebidas"
+        },
+        {
+            "_id": "3",
+            "nome": "Higiene"
+        }
+    ],
+
+"mercados": [
+        {
+            "_id": "1",
+            "nome": "Mercado A"
+        },
+        {
+            "_id": "2",
+            "nome": "Mercado B"
+        },
+        {
+            "_id": "3",
+            "nome": "Mercado C"
+        }
+    ]
+}

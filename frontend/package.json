@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "tailwind:init": "tailwindcss init -p",
-    "build:front": "tsc --project frontend/"
+    "build:front": "tsc --project frontend/",
+    "start": "npm install",
+    "clear": "rm -rf node_modules"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",

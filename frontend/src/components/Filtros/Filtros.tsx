@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Filtros.css";
+import Select, { OpcaoSelect } from "../Select/Select";
 
 interface FiltrosProps {
   categorias: string[];
@@ -8,6 +9,7 @@ interface FiltrosProps {
 }
 
 const Filtros = ({ categorias, mercados, onFiltrar }: FiltrosProps) => {
+
   const [categoriaSelecionada, setCategoriaSelecionada] = useState("");
   const [mercadoSelecionado, setMercadoSelecionado] = useState("");
 
@@ -18,31 +20,34 @@ const Filtros = ({ categorias, mercados, onFiltrar }: FiltrosProps) => {
     });
   };
 
+  const opcoesCategorias: OpcaoSelect[] = categorias.map((cat) => ({
+    valor: cat,
+    rotulo: cat // Como é apenas um filtro simples, a palavra processada e a palavra lida são as mesmas
+  }));
+
+  const opcoesMercados: OpcaoSelect[] = mercados.map((mercado) => ({
+    valor: mercado,
+    rotulo: mercado
+  }));
+
   return (
     <div className="filtros">
-      <select
+      <h2>Filtros</h2>
+      <Select
+        label="Categoria: "
+        name="filtro-categoria"
+        options={opcoesCategorias}
         value={categoriaSelecionada}
         onChange={(e) => setCategoriaSelecionada(e.target.value)}
-      >
-        <option value="">Todas as categorias</option>
-        {categorias.map((cat, idx) => (
-          <option key={idx} value={cat}>
-            {cat}
-          </option>
-        ))}
-      </select>
+      />
 
-      <select
+      <Select
+        label="Mercado: "
+        name="filtro-mercado"
+        options={opcoesMercados}
         value={mercadoSelecionado}
         onChange={(e) => setMercadoSelecionado(e.target.value)}
-      >
-        <option value="">Todos os mercados</option>
-        {mercados.map((mercado, idx) => (
-          <option key={idx} value={mercado}>
-            {mercado}
-          </option>
-        ))}
-      </select>
+      />
 
       <button onClick={handleFiltrar}>Filtrar</button>
     </div>

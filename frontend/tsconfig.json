@@ -4,11 +4,11 @@
     "module": "ESNext",
     "jsx": "react",
     "strict": true,
-    "moduleResolution": "node",
+    // "moduleResolution": "node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "outDir": "./dist",
+    // "outDir": "./dist",
     "resolveJsonModule": true,
     "isolatedModules": true
   },

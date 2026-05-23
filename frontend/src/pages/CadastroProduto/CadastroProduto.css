@@ -1,0 +1,10 @@
+.cadastro-produto{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.cadastro-produto main{
+    flex: 1;
+    padding: 2rem;
+}

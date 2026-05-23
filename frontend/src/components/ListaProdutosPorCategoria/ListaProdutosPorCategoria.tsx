@@ -3,6 +3,7 @@ import Produto from "../Produto/Produto";
 import "./ListaProdutosPorCategoria.css";
 
 interface ProdutoData {
+  _id: string;
   nome: string;
   preco: number;
   mercado: string;
@@ -30,8 +31,8 @@ const ListaProdutosPorCategoria = ({ produtos, categorias, categoriaFiltrada }: 
           <div key={categoria} className="categoria">
             <h2>{categoria}</h2>
             <div className="produtos-horizontal">
-              {produtosDaCategoria.map((produto, index) => (
-                <Produto key={index} produto={produto} />
+              {produtosDaCategoria.map((produto) => (
+                <Produto key={produto._id} produto={produto} />
               ))}
             </div>
           </div>

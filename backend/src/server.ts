@@ -2,7 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import router from './routes/produtos';
+import routerP from './routes/produtos';
+import routerM from './routes/mercados';
+import routerC from './routes/categorias';
 
 dotenv.config();
 
@@ -16,7 +18,9 @@ app.get("/", (req, res) => {
 });
 
 
-app.use(router);
+app.use(routerP);
+app.use(routerM);
+app.use(routerC);
 
 const PORT = process.env.PORT || 3000;
 
