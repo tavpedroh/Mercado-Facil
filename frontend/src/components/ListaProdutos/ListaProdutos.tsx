@@ -1,14 +1,7 @@
 import React from "react";
 import Produto from "../Produto/Produto";
+import { ProdutoData } from "../../types/index";
 import "./ListaProdutos.css";
-
-interface ProdutoData {
-  _id: string;
-  nome: string;
-  preco: number;
-  mercado: string;
-  desconto?: number;
-}
 
 interface ListaProdutosProps {
   produtos: ProdutoData[];
@@ -17,12 +10,9 @@ interface ListaProdutosProps {
 const ListaProdutos = ({ produtos }: ListaProdutosProps) => {
   return (
     <section className="lista-produtos">
-      {produtos.map( (produto) => (
-        <Produto
-          key={produto._id}
-          produto={produto}
-        />
-      ) ) }
+      {produtos.map((produto) => (
+          <Produto produto={produto} />
+      ))}
     </section>
   );
 };

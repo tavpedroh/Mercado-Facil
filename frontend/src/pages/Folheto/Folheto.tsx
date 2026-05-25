@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
+import "./Folheto.css";
+
 import Header from "../../components/Header/Header";
 import Filtros from "../../components/Filtros/Filtros";
 import ListaProdutosPorCategoria from "../../components/ListaProdutosPorCategoria/ListaProdutosPorCategoria";
-import "./Folheto.css";
 import Ordenador from "../../components/Ordenador/Ordenador";
 import VitrineDestaques from "../../components/VitrineDestaques/VitrineDestaques";
-import { buscarProdutos, buscarCategorias, buscarMercados, ProdutoData } from "../../services/api";
+import DetalhamentoProduto from "../../components/DetalhamentoProduto/DetalhamentoProduto";
+
+import { buscarProdutos, buscarCategorias, buscarMercados } from "../../services/api";
+import { ProdutoData } from "../../types/index";
+import { reterApenasMenorPreco, aplicarFiltros, aplicarOrdenacao } from "../../regras/triagemMercadorias";
 
 function Folheto() {
   const [produtos, setProdutos] = useState<ProdutoData[]>([]);
@@ -15,6 +20,7 @@ function Folheto() {
   const [categoriaSelecionada, setCategoriaSelecionada] = useState<string | null>(null);
   const [mercadoSelecionado, setMercadoSelecionado] = useState<string | null>(null);
   const [ordemSelecionada, setOrdemSelecionada] = useState<string>("");
+  const [produtoSelecionado, setProdutoSelecionado] = useState<ProdutoData | null>(null);
 
   useEffect(() => {
     buscarProdutos().then((dados) => setProdutos(dados));
@@ -27,47 +33,19 @@ function Folheto() {
     setMercadoSelecionado(mercado || null);
   };
 
-  const produtosFiltrados = produtos.filter((produto) => {
-    return (
-      (!categoriaSelecionada || produto.categoria === categoriaSelecionada) &&
-      (!mercadoSelecionado || produto.mercado === mercadoSelecionado)
-    );
-  });
-
-  const produtosOrdenados = [...produtosFiltrados].sort((a, b) => {
-    if (ordemSelecionada === "nome-asc") {
-      return a.nome.localeCompare(b.nome);
-    }
-    if (ordemSelecionada === "nome-desc") {
-      return b.nome.localeCompare(a.nome);
-    }
-    if (ordemSelecionada === "preco-asc") {
-      return a.preco - b.preco;
-    }
-    if (ordemSelecionada === "preco-desc") {
-      return b.preco - a.preco;
-    }
-    if (ordemSelecionada === "desconto-desc") {
-      const descontoA = a.desconto || 0;
-      const descontoB = b.desconto || 0;
-      return descontoB - descontoA;
-    }
-    return 0; 
-  });
+  const produtosUnicos = reterApenasMenorPreco(produtos);
+  const produtosFiltrados = aplicarFiltros(produtosUnicos, categoriaSelecionada, mercadoSelecionado);
+  const produtosOrdenados = aplicarOrdenacao(produtosFiltrados, ordemSelecionada);
 
   return (
-    <body className="folheto">
+    <div className="folheto-container">
       <Header />
       <div>
-        {/* <section className="banner-folheto">
-          <h1>Bem-vindo ao Folheto Digital do Mercado Fácil!</h1>
-          <p>Encontre as melhores ofertas e organize suas compras com facilidade.</p>
-        </section> */}
+        
         <section className="destaques-folheto">
-          {/* <h2>Ofertas Imperdíveis</h2>
-          <p>Confira os produtos com os maiores descontos e aproveite para economizar!</p> */}
           <VitrineDestaques produtos={produtos} />
         </section>
+        
         <main>
           <h1>Produtos</h1>
           <div className="folheto-div">
@@ -79,17 +57,28 @@ function Folheto() {
               />
               <Ordenador aoEscolherOrdem={setOrdemSelecionada} ordemAtual={ordemSelecionada} />
             </menu>
+            
             <div className="conteudo-principal">
               <ListaProdutosPorCategoria 
                 produtos={produtosOrdenados} 
+                todosOsProdutosRaw={produtos}
                 categorias={categorias} 
                 categoriaFiltrada={categoriaSelecionada} 
+                aoSelecionarProduto={setProdutoSelecionado}
               />
             </div>
           </div>
         </main>
       </div>
-    </body>
+
+      {produtoSelecionado && (
+        <DetalhamentoProduto 
+          produto={produtoSelecionado} 
+          todosOsProdutos={produtos}
+          aoFechar={() => setProdutoSelecionado(null)} 
+        />
+      )}
+    </div>
   );
 }
 

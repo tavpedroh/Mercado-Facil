@@ -1,14 +1,5 @@
 const API_URL = "http://localhost:3000";
-
-export interface ProdutoData {
-  _id: string;
-  nome: string;
-  descricao?: string;
-  preco: number;
-  mercado: string;
-  categoria: string;
-  desconto?: number;
-}
+import { ProdutoData } from "../types/index";
 
 export const buscarCategorias = async (): Promise<string[]> => {
   try {

@@ -6,7 +6,8 @@
     "backend": "cd backend && npm run start && npm run dev",
     "start": " npm run frontend && npm run backend",
     "clear-backend": "cd backend && npm run clear",
-    "clear-frontend": "cd frontend && npm run clear"
+    "clear-frontend": "cd frontend && npm run clear",
+    "clear": "npm run clear-backend && npm run clear-frontend"
   },
   "devDependencies": {
     "typescript": "^5.8.3"

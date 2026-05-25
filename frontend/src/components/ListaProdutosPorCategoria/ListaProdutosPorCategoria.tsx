@@ -1,24 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import Produto from "../Produto/Produto";
 import "./ListaProdutosPorCategoria.css";
-
-interface ProdutoData {
-  _id: string;
-  nome: string;
-  preco: number;
-  mercado: string;
-  categoria: string;
-  desconto?: number;
-}
+import { ProdutoData } from "../../types/index";
+import DetalhamentoProduto from "../DetalhamentoProduto/DetalhamentoProduto";
 
 interface ListaProdutosPorCategoriaProps {
   produtos: ProdutoData[];
+  todosOsProdutosRaw: ProdutoData[];
   categorias: string[];
   categoriaFiltrada: string | null;
+  aoSelecionarProduto: (produto: ProdutoData) => void;
 }
 
-const ListaProdutosPorCategoria = ({ produtos, categorias, categoriaFiltrada }: ListaProdutosPorCategoriaProps) => {
+const ListaProdutosPorCategoria = ({ 
+  produtos, 
+  todosOsProdutosRaw, 
+  categorias, 
+  categoriaFiltrada 
+}: ListaProdutosPorCategoriaProps) => {
   const categoriasParaExibir = categoriaFiltrada ? [categoriaFiltrada] : categorias;
+  const [produtoSelecionado, setProdutoSelecionado] = useState<ProdutoData | null>(null);
 
   return (
     <div className="lista-categorias">
@@ -32,9 +33,24 @@ const ListaProdutosPorCategoria = ({ produtos, categorias, categoriaFiltrada }: 
             <h2>{categoria}</h2>
             <div className="produtos-horizontal">
               {produtosDaCategoria.map((produto) => (
-                <Produto key={produto._id} produto={produto} />
+                <div 
+                  key={produto._id} 
+                  onClick={() => setProdutoSelecionado(produto)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <Produto produto={produto} />
+                </div>
               ))}
             </div>
+            
+            {produtoSelecionado && (
+              <DetalhamentoProduto 
+                produto={produtoSelecionado} 
+                /* ENTREGAMOS O ACERVO BRUTO: Agora a janela encontrará os concorrentes */
+                todosOsProdutos={todosOsProdutosRaw} 
+                aoFechar={() => setProdutoSelecionado(null)} 
+              />
+            )}
           </div>
         );
       })}

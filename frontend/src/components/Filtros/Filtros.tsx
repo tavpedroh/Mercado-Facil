@@ -22,7 +22,7 @@ const Filtros = ({ categorias, mercados, onFiltrar }: FiltrosProps) => {
 
   const opcoesCategorias: OpcaoSelect[] = categorias.map((cat) => ({
     valor: cat,
-    rotulo: cat // Como é apenas um filtro simples, a palavra processada e a palavra lida são as mesmas
+    rotulo: cat 
   }));
 
   const opcoesMercados: OpcaoSelect[] = mercados.map((mercado) => ({
