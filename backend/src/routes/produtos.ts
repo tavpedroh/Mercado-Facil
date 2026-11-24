@@ -1,27 +1,36 @@
 import express from "express";
-import Produto from "../models/Produto";
+import {
+  atualizarProduto,
+  buscarProdutoPorId,
+  criarProduto,
+  listarProdutos,
+  removerProduto,
+} from "../controllers/produtoController";
+import { validate } from "../middlewares/validate";
+import { idParamSchema } from "../validators/common";
+import {
+  atualizarProdutoSchema,
+  criarProdutoSchema,
+  listarProdutosQuerySchema,
+} from "../validators/produtoValidator";
 
 const router = express.Router();
 
-
-router.get("/produtos", async (req, res) => {
-  try {
-    const produtos = await Produto.find();
-    res.json(produtos);
-  } catch (err) {
-    res.status(500).json({ erro: "Erro ao buscar produtos" });
-  }
-});
-
-
-router.post("/produtos", async (req, res) => {
-  try {
-    const novoProduto = new Produto(req.body);
-    await novoProduto.save();
-    res.status(201).json(novoProduto);
-  } catch (err) {
-    res.status(400).json({ erro: "Erro ao cadastrar produto" });
-  }
-});
+router.get("/produtos", validate(listarProdutosQuerySchema, "query"), listarProdutos);
+router.get("/produtos/:id", validate(idParamSchema, "params"), buscarProdutoPorId);
+router.post("/produtos", validate(criarProdutoSchema, "body"), criarProduto);
+router.put(
+  "/produtos/:id",
+  validate(idParamSchema, "params"),
+  validate(atualizarProdutoSchema, "body"),
+  atualizarProduto
+);
+router.patch(
+  "/produtos/:id",
+  validate(idParamSchema, "params"),
+  validate(atualizarProdutoSchema, "body"),
+  atualizarProduto
+);
+router.delete("/produtos/:id", validate(idParamSchema, "params"), removerProduto);
 
 export default router;

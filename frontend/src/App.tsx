@@ -1,16 +1,21 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
+import { ListaComprasProvider } from "./context/ListaComprasContext";
 import Folheto from "./pages/Folheto";
 import Cadastro from "./pages/Cadastro";
+import ListaCompras from "./pages/ListaCompras";
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Folheto />} />
-        <Route path="/cadastro" element={<Cadastro />} />
-      </Routes>
-    </Router>
+    <ListaComprasProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Folheto />} />
+          <Route path="/lista" element={<ListaCompras />} />
+          <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Router>
+    </ListaComprasProvider>
   );
 };
 

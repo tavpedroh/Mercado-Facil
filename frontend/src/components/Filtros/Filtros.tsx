@@ -1,51 +1,119 @@
-import React, { useState } from "react";
 import "./Filtros.css";
 
-interface FiltrosProps {
-  categorias: string[];
-  mercados: string[];
-  onFiltrar: (filtros: { categoria: string; mercado: string }) => void;
+export type OrdenacaoOfertas =
+  | "recentes"
+  | "menor_preco"
+  | "maior_preco"
+  | "maior_desconto";
+
+export interface EstadoFiltros {
+  busca: string;
+  categoria: string;
+  mercado: string;
+  ordenar: OrdenacaoOfertas;
+  apenasPromocoes: boolean;
 }
 
-const Filtros = ({ categorias, mercados, onFiltrar }: FiltrosProps) => {
-  const [categoriaSelecionada, setCategoriaSelecionada] = useState("");
-  const [mercadoSelecionado, setMercadoSelecionado] = useState("");
+interface FiltrosProps {
+  filtros: EstadoFiltros;
+  categorias: string[];
+  mercados: string[];
+  totalResultados: number;
+  onChange: (novosFiltros: EstadoFiltros) => void;
+  onLimpar: () => void;
+}
 
-  const handleFiltrar = () => {
-    onFiltrar({
-      categoria: categoriaSelecionada,
-      mercado: mercadoSelecionado,
-    });
-  };
+const Filtros = ({
+  filtros,
+  categorias,
+  mercados,
+  totalResultados,
+  onChange,
+  onLimpar,
+}: FiltrosProps) => {
+  const temFiltroAtivo = Boolean(
+    filtros.busca.trim() ||
+      filtros.categoria ||
+      filtros.mercado ||
+      filtros.apenasPromocoes ||
+      filtros.ordenar !== "recentes"
+  );
 
   return (
-    <div className="filtros">
-      <select
-        value={categoriaSelecionada}
-        onChange={(e) => setCategoriaSelecionada(e.target.value)}
-      >
-        <option value="">Todas as categorias</option>
-        {categorias.map((cat, idx) => (
-          <option key={idx} value={cat}>
-            {cat}
-          </option>
-        ))}
-      </select>
+    <section className="filtros-bar" aria-label="Filtros e busca de ofertas">
+      <div className="filtros">
+        <input
+          type="search"
+          className="campo-busca"
+          aria-label="Buscar produto ou marca"
+          placeholder="Buscar produto, marca ou descrição..."
+          value={filtros.busca}
+          onChange={(e) => onChange({ ...filtros, busca: e.target.value })}
+        />
 
-      <select
-        value={mercadoSelecionado}
-        onChange={(e) => setMercadoSelecionado(e.target.value)}
-      >
-        <option value="">Todos os mercados</option>
-        {mercados.map((mercado, idx) => (
-          <option key={idx} value={mercado}>
-            {mercado}
-          </option>
-        ))}
-      </select>
+        <select
+          aria-label="Filtrar por categoria"
+          value={filtros.categoria}
+          onChange={(e) => onChange({ ...filtros, categoria: e.target.value })}
+        >
+          <option value="">Todas as categorias</option>
+          {categorias.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
 
-      <button onClick={handleFiltrar}>Filtrar</button>
-    </div>
+        <select
+          aria-label="Filtrar por mercado"
+          value={filtros.mercado}
+          onChange={(e) => onChange({ ...filtros, mercado: e.target.value })}
+        >
+          <option value="">Todos os mercados</option>
+          {mercados.map((mercado) => (
+            <option key={mercado} value={mercado}>
+              {mercado}
+            </option>
+          ))}
+        </select>
+
+        <select
+          aria-label="Ordenar ofertas"
+          value={filtros.ordenar}
+          onChange={(e) =>
+            onChange({ ...filtros, ordenar: e.target.value as OrdenacaoOfertas })
+          }
+        >
+          <option value="recentes">Mais recentes</option>
+          <option value="menor_preco">Menor preço</option>
+          <option value="maior_preco">Maior preço</option>
+          <option value="maior_desconto">Maior desconto</option>
+        </select>
+
+        <label className="checkbox-promocoes">
+          <input
+            type="checkbox"
+            checked={filtros.apenasPromocoes}
+            onChange={(e) =>
+              onChange({ ...filtros, apenasPromocoes: e.target.checked })
+            }
+          />
+          Só promoções
+        </label>
+
+        {temFiltroAtivo && (
+          <button type="button" className="btn-limpar" onClick={onLimpar}>
+            Limpar
+          </button>
+        )}
+      </div>
+
+      <p className="resumo-resultados">
+        {totalResultados === 1
+          ? "1 oferta encontrada"
+          : `${totalResultados} ofertas encontradas`}
+      </p>
+    </section>
   );
 };
 

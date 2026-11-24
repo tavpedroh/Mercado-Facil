@@ -1,16 +1,23 @@
-import React from "react";
+import type { ChangeEvent } from "react";
 import "./Select.css";
 
 interface SelectProps {
   label: string;
   name: string;
-  options: string[];
+  options: readonly string[];
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   required?: boolean;
 }
 
-const Select = ({ label, name, options, value, onChange, required = false }: SelectProps) => {
+const Select = ({
+  label,
+  name,
+  options,
+  value,
+  onChange,
+  required = false,
+}: SelectProps) => {
   return (
     <div className="select-container">
       <label htmlFor={name}>{label}</label>

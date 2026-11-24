@@ -1,0 +1,98 @@
+.comparador-ofertas {
+  margin: 1rem 2rem 0.5rem;
+  padding: 1.25rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #dcedc8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.comparador-cabecalho h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #1b5e20;
+}
+
+.comparador-cabecalho p {
+  margin: 0.25rem 0 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.comparador-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.comparador-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background-color: #fafafa;
+}
+
+.comparador-card-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.comparador-card-topo h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.comparador-economia {
+  flex-shrink: 0;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background-color: #e8f5e9;
+  color: #1b5e20;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.comparador-lista-precos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.comparador-lista-precos li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  background-color: #ffffff;
+}
+
+.comparador-lista-precos li.oferta-campea {
+  background-color: #e8f5e9;
+  color: #1b5e20;
+  font-weight: 600;
+}
+
+.btn-comparador-add {
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #4caf50;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.btn-comparador-add:hover {
+  background-color: #43a047;
+}

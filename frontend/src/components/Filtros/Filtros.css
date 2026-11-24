@@ -1,27 +1,61 @@
+.filtros-bar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 1rem 2rem;
+}
+
 .filtros {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem 2rem;
-    background-color: #ffffff;
-    align-items: center;
-  }
-  
-  .filtros select, .filtros button {
-    padding: 0.5rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-  }
-  
-  .filtros button {
-    background-color: #4caf50;
-    color: white;
-    cursor: pointer;
-    border: none;
-    transition: background 0.2s;
-  }
-  
-  .filtros button:hover {
-    background-color: #45a049;
-  }
-  
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.filtros .campo-busca {
+  flex: 1 1 240px;
+  min-width: 200px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.filtros select,
+.filtros button {
+  padding: 0.55rem 0.75rem;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.checkbox-promocoes {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
+  user-select: none;
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+}
+
+.filtros .btn-limpar {
+  background-color: #666;
+  color: white;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+
+.filtros .btn-limpar:hover {
+  background-color: #4d4d4d;
+}
+
+.resumo-resultados {
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+  color: #666;
+}

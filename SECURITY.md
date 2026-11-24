@@ -1,21 +1,14 @@
-# Security Policy
+# Política de Segurança
 
-## Supported Versions
+## Boas práticas adotadas
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+- Variáveis sensíveis (`MONGODB_URI`, chaves de API) devem permanecer apenas em arquivos `.env` locais (ignorados pelo Git) ou no gerenciador de segredos do ambiente de deploy.
+- Restrinja a chave do Google Maps (`VITE_GOOGLE_MAPS_API_KEY`) por domínio (HTTP referrer) e APIs permitidas no Google Cloud Console.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+## Como reportar uma vulnerabilidade
 
-## Reporting a Vulnerability
+Caso encontre uma falha de segurança neste projeto:
 
-Use this section to tell people how to report a vulnerability.
-
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+1. **Não** abra uma issue pública expondo detalhes da vulnerabilidade.
+2. Reporte diretamente ao mantenedor pelo canal privado do repositório (GitHub Security Advisories) descrevendo os passos para reprodução e o impacto estimado.
+3. Assim que confirmada, a correção será priorizada e publicada na branch principal.

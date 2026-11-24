@@ -1,8 +1,16 @@
 {
-  "devDependencies": {
-    "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "react-router-dom": "^7.5.1"
+  "name": "mercadofacil",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema Mercado Fácil - Folheto digital de ofertas e localização de mercados",
+  "scripts": {
+    "install:all": "npm --prefix backend install && npm --prefix frontend install",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "seed:backend": "npm --prefix backend run seed",
+    "build:backend": "npm --prefix backend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "lint": "npm --prefix frontend run lint"
   }
 }

@@ -1,22 +1,124 @@
 .mapa-mercados {
-    padding: 2rem;
-    background-color: #f2f2f2;
-  }
-  
-  .mapa-mercados h2 {
-    margin-bottom: 1rem;
-    font-size: 1.4rem;
-  }
-  
-  .mapa-placeholder {
-    background-color: #d9d9d9;
-    height: 300px;
-    border: 2px dashed #aaa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #555;
-    font-size: 1.2rem;
-    border-radius: 10px;
-  }
-  
+  padding: 2rem;
+  background-color: #f2f2f2;
+}
+
+.mapa-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mapa-mercados h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.mapa-subtitulo {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.btn-geolocalizacao {
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #1976d2;
+  background-color: #ffffff;
+  color: #1565c0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-geolocalizacao:hover:not(:disabled) {
+  background-color: #1976d2;
+  color: #ffffff;
+}
+
+.btn-geolocalizacao:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.mapa-aviso-geo {
+  margin: 0 0 1rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  background-color: #fff3e0;
+  color: #e65100;
+  font-size: 0.9rem;
+}
+
+.mapa-cards-mercados {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.card-mercado-mapa {
+  text-align: left;
+  padding: 0.75rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background-color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.card-mercado-mapa:hover {
+  border-color: #4caf50;
+}
+
+.card-mercado-mapa.ativo {
+  border-color: #2e7d32;
+  background-color: #e8f5e9;
+  box-shadow: 0 2px 6px rgba(46, 125, 50, 0.16);
+}
+
+.card-mercado-mapa .mercado-endereco {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.card-mercado-mapa .mercado-meta {
+  font-size: 0.82rem;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.card-mercado-mapa .mercado-distancia {
+  font-size: 0.8rem;
+  color: #1565c0;
+  font-weight: 600;
+}
+
+.mapa-canvas {
+  width: 100%;
+  height: 420px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.mapa-placeholder {
+  background-color: #e6e6e6;
+  min-height: 240px;
+  padding: 1.5rem;
+  border: 2px dashed #aaa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #555;
+  font-size: 1rem;
+  border-radius: 10px;
+}

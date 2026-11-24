@@ -1,27 +1,45 @@
-.secao-categoria {
-    margin-bottom: 32px;
-    padding: 0 16px;
-  }
-  
-  .secao-categoria h2 {
-    margin-bottom: 12px;
-    font-size: 1.5rem;
-  }
-  
-  .linha-horizontal {
-    display: flex;
-    overflow-x: auto;
-    gap: 16px;
-    padding-bottom: 12px;
-    scroll-behavior: smooth;
-  }
-  
-  .linha-horizontal::-webkit-scrollbar {
-    height: 8px;
-  }
-  
-  .linha-horizontal::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 4px;
-  }
-  
+.folheto-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.folheto-conteudo {
+  flex: 1;
+}
+
+.estado-mensagem {
+  text-align: center;
+  padding: 2rem;
+  color: #555;
+  font-size: 1.05rem;
+}
+
+.estado-erro {
+  max-width: 520px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #ffebee;
+  border: 1px solid #ef9a9a;
+  border-radius: 10px;
+  color: #b71c1c;
+  text-align: center;
+}
+
+.estado-erro p {
+  margin-top: 0;
+}
+
+.estado-erro button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #c62828;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.estado-erro button:hover {
+  background-color: #b71c1c;
+}

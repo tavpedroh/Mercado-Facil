@@ -1,42 +1,53 @@
-import React from "react";
+import type { Produto as ProdutoType } from "../../types/produto";
+import { gerarChaveComparacao, type ComparacaoOferta } from "../../utils/comparador";
 import Produto from "../Produto/Produto";
 import "./ListaProdutosPorCategoria.css";
 
-interface ProdutoData {
-  nome: string;
-  preco: number;
-  mercado: string;
-  categoria: string;
-  desconto?: number;
-}
-
 interface ListaProdutosPorCategoriaProps {
-  produtos: ProdutoData[];
+  produtos: ProdutoType[];
   categorias: string[];
   categoriaFiltrada: string | null;
+  comparacoes?: Map<string, ComparacaoOferta>;
 }
 
-const ListaProdutosPorCategoria = ({ produtos, categorias, categoriaFiltrada }: ListaProdutosPorCategoriaProps) => {
+const ListaProdutosPorCategoria = ({
+  produtos,
+  categorias,
+  categoriaFiltrada,
+  comparacoes,
+}: ListaProdutosPorCategoriaProps) => {
   const categoriasParaExibir = categoriaFiltrada ? [categoriaFiltrada] : categorias;
+  const secoesVisiveis = categoriasParaExibir
+    .map((categoria) => ({
+      categoria,
+      itens: produtos.filter((p) => (p.categoria || "Sem categoria") === categoria),
+    }))
+    .filter((secao) => secao.itens.length > 0);
+
+  if (secoesVisiveis.length === 0) {
+    return (
+      <div className="lista-categorias">
+        <p className="estado-vazio">Nenhum produto encontrado para os filtros selecionados.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="lista-categorias">
-      {categoriasParaExibir.map((categoria) => {
-        const produtosDaCategoria = produtos.filter((p) => p.categoria === categoria);
-
-        if (produtosDaCategoria.length === 0) return null;
-
-        return (
-          <div key={categoria} className="categoria">
-            <h2>{categoria}</h2>
-            <div className="produtos-horizontal">
-              {produtosDaCategoria.map((produto, index) => (
-                <Produto key={index} produto={produto} />
-              ))}
-            </div>
+      {secoesVisiveis.map(({ categoria, itens }) => (
+        <section key={categoria} className="categoria">
+          <h2>{categoria}</h2>
+          <div className="produtos-horizontal">
+            {itens.map((produto, index) => (
+              <Produto
+                key={produto._id ?? `${produto.nome}-${produto.mercado}-${index}`}
+                produto={produto}
+                comparacao={comparacoes?.get(gerarChaveComparacao(produto))}
+              />
+            ))}
           </div>
-        );
-      })}
+        </section>
+      ))}
     </div>
   );
 };
