@@ -5,6 +5,7 @@
 }
 
 .filtros {
+<<<<<<< HEAD
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
@@ -59,3 +60,51 @@
   font-size: 0.85rem;
   color: #666;
 }
+=======
+    display: flex;
+    flex-direction: column;
+    /* max-height: 100%; */
+    gap: 1rem;
+    padding: 1rem 2rem;
+    background-color: #ffffff;
+    align-items: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+
+  }
+  
+  .filtros select, .filtros button {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+  .filtros option{
+    background-color: #380f4481;
+    color: #ffffff;
+    border: none;
+    transition: background 0.2s;
+    }
+  .filtros option:hover {
+    background-color: #a66fff;
+  }
+  
+  .filtros button {
+    background-color: #380f44;
+    color: white;
+    border: none;
+    transition: background 0.2s;
+  }
+  
+  .filtros button:hover {
+    background-color: #a66fff;
+  }
+  
+  .folheto-div{
+    display: flex;
+    gap: 2rem;
+    padding: 1rem;
+  }
+>>>>>>> defd184af27594ee5718df29522dbd40f69b6b8b

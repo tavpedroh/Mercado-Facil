@@ -1,4 +1,5 @@
 import "./Filtros.css";
+import Select, { OpcaoSelect } from "../Select/Select";
 
 export type OrdenacaoOfertas =
   | "recentes"
@@ -14,6 +15,7 @@ export interface EstadoFiltros {
   apenasPromocoes: boolean;
 }
 
+<<<<<<< HEAD
 interface FiltrosProps {
   filtros: EstadoFiltros;
   categorias: string[];
@@ -22,6 +24,12 @@ interface FiltrosProps {
   onChange: (novosFiltros: EstadoFiltros) => void;
   onLimpar: () => void;
 }
+=======
+const Filtros = ({ categorias, mercados, onFiltrar }: FiltrosProps) => {
+
+  const [categoriaSelecionada, setCategoriaSelecionada] = useState("");
+  const [mercadoSelecionado, setMercadoSelecionado] = useState("");
+>>>>>>> defd184af27594ee5718df29522dbd40f69b6b8b
 
 const Filtros = ({
   filtros,
@@ -39,7 +47,18 @@ const Filtros = ({
       filtros.ordenar !== "recentes"
   );
 
+  const opcoesCategorias: OpcaoSelect[] = categorias.map((cat) => ({
+    valor: cat,
+    rotulo: cat 
+  }));
+
+  const opcoesMercados: OpcaoSelect[] = mercados.map((mercado) => ({
+    valor: mercado,
+    rotulo: mercado
+  }));
+
   return (
+<<<<<<< HEAD
     <section className="filtros-bar" aria-label="Filtros e busca de ofertas">
       <div className="filtros">
         <input
@@ -63,6 +82,25 @@ const Filtros = ({
             </option>
           ))}
         </select>
+=======
+    <div className="filtros">
+      <h2>Filtros</h2>
+      <Select
+        label="Categoria: "
+        name="filtro-categoria"
+        options={opcoesCategorias}
+        value={categoriaSelecionada}
+        onChange={(e) => setCategoriaSelecionada(e.target.value)}
+      />
+
+      <Select
+        label="Mercado: "
+        name="filtro-mercado"
+        options={opcoesMercados}
+        value={mercadoSelecionado}
+        onChange={(e) => setMercadoSelecionado(e.target.value)}
+      />
+>>>>>>> defd184af27594ee5718df29522dbd40f69b6b8b
 
         <select
           aria-label="Filtrar por mercado"

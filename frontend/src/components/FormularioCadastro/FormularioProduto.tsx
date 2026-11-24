@@ -1,3 +1,4 @@
+<<<<<<< HEAD:frontend/src/components/FormularioProduto/FormularioProduto.tsx
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import Input from "../Input/Input";
 import Select from "../Select/Select";
@@ -49,6 +50,34 @@ const FormularioProduto = () => {
     mercadosApi.length > 0 ? mercadosApi.map((m) => m.nome) : MERCADOS_PADRAO;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+=======
+import React, { useState, useEffect } from "react";
+import Input from "../Input/Input";
+import Select, { OpcaoSelect } from "../Select/Select"; // Importamos o molde universal e sua estrutura
+import "./FormularioCadastro.css";
+import { buscarCategorias, buscarMercados } from "../../services/api"; 
+
+const FormularioProduto = () => {
+
+  const [categorias, setCategorias] = useState<string[]>([]);
+  const [mercados, setMercados] = useState<string[]>([]);
+
+  const [formData, setFormData] = useState({
+    nome: "",
+    descricao: "",
+    preco: "",
+    desconto: "",
+    categoria: "",
+    mercado: "",
+  });
+
+  useEffect(() => {
+    buscarCategorias().then((dados) => setCategorias(dados));
+    buscarMercados().then((dados) => setMercados(dados));
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+>>>>>>> defd184af27594ee5718df29522dbd40f69b6b8b:frontend/src/components/FormularioCadastro/FormularioProduto.tsx
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -70,12 +99,20 @@ const FormularioProduto = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+<<<<<<< HEAD:frontend/src/components/FormularioProduto/FormularioProduto.tsx
     setFeedback(null);
 
     if (Number.isNaN(precoNumero) || precoNumero <= 0) {
       setFeedback({ tipo: "erro", mensagem: "Informe um preço válido maior que zero." });
       return;
     }
+=======
+    const produto = {
+      ...formData,
+      preco: parseFloat(formData.preco),
+      desconto: formData.desconto ? parseFloat(formData.desconto) : 0,
+    };
+>>>>>>> defd184af27594ee5718df29522dbd40f69b6b8b:frontend/src/components/FormularioCadastro/FormularioProduto.tsx
 
     if (Number.isNaN(descontoNumero) || descontoNumero < 0 || descontoNumero > 100) {
       setFeedback({ tipo: "erro", mensagem: "O desconto deve estar entre 0% e 100%." });
@@ -98,8 +135,17 @@ const FormularioProduto = () => {
         mercadoId: mercadoVinculado?._id,
       });
 
+<<<<<<< HEAD:frontend/src/components/FormularioProduto/FormularioProduto.tsx
       setFeedback({ tipo: "sucesso", mensagem: "Produto cadastrado com sucesso!" });
       setFormData(ESTADO_INICIAL);
+=======
+      if (resposta.ok) {
+        alert("Produto cadastrado com sucesso!");
+        setFormData({ nome: "", descricao: "", preco: "", desconto: "", categoria: "", mercado: "" });
+      } else {
+        alert("Erro ao cadastrar o produto.");
+      }
+>>>>>>> defd184af27594ee5718df29522dbd40f69b6b8b:frontend/src/components/FormularioCadastro/FormularioProduto.tsx
     } catch (error) {
       const mensagem =
         error instanceof Error ? error.message : "Erro ao conectar com o servidor.";
@@ -107,10 +153,13 @@ const FormularioProduto = () => {
     } finally {
       setEnviando(false);
     }
-  };
+  }
+  // Transformamos as palavras simples nas "fichas duplas" exigidas pelo novo molde
+  const opcoesCategorias: OpcaoSelect[] = categorias.map((cat) => ({ valor: cat, rotulo: cat }));
+  const opcoesMercados: OpcaoSelect[] = mercados.map((merc) => ({ valor: merc, rotulo: merc }));
 
   return (
-    <form className="formulario-produto" onSubmit={handleSubmit}>
+    <form className="formulario-cadastro" onSubmit={handleSubmit}>
       <h2>Cadastrar Produto</h2>
 
       {feedback && (
@@ -174,6 +223,7 @@ const FormularioProduto = () => {
         onChange={handleChange}
         placeholder="0"
       />
+<<<<<<< HEAD:frontend/src/components/FormularioProduto/FormularioProduto.tsx
 
       {precoFinalPrevia !== null && (
         <p className="previa-preco">
@@ -201,6 +251,28 @@ const FormularioProduto = () => {
       <button type="submit" disabled={enviando}>
         {enviando ? "Cadastrando..." : "Cadastrar"}
       </button>
+=======
+      
+      <Select 
+        label="Categoria" 
+        name="categoria" 
+        options={opcoesCategorias} 
+        value={formData.categoria} 
+        onChange={handleChange} 
+        required 
+      />
+
+      <Select 
+        label="Mercado" 
+        name="mercado" 
+        options={opcoesMercados} 
+        value={formData.mercado} 
+        onChange={handleChange} 
+        required 
+      />
+      
+      <button type="submit">Cadastrar</button>
+>>>>>>> defd184af27594ee5718df29522dbd40f69b6b8b:frontend/src/components/FormularioCadastro/FormularioProduto.tsx
     </form>
   );
 };
