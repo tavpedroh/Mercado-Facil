@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import type { Coordenadas } from "../../types/produto";
@@ -122,7 +121,6 @@ const MapaMercados = ({
       return;
     }
 
-    // Limpa marcadores anteriores
     markersRef.current.forEach((marker) => {
       if ("setMap" in marker) {
         marker.setMap(null);
@@ -312,48 +310,5 @@ const MapaMercados = ({
     </section>
   );
 };
-=======
-// // src/components/MapaMercados/MapaMercados.tsx
-// import React, { useEffect, useRef } from "react";
-// import { Loader } from "@googlemaps/js-api-loader";
 
-// interface Coordenadas {
-//   lat: number;
-//   lng: number;
-// }
-
-// interface MapaMercadosProps {
-//   coordenadas: Coordenadas;
-// }
-
-// const MapaMercados: React.FC<MapaMercadosProps> = ({ coordenadas }) => {
-//   const mapRef = useRef<HTMLDivElement>(null);
-
-//   useEffect(() => {
-//     const loader = new Loader({
-//       apiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY!,
-//       version: "weekly",
-//       libraries: ["maps", "marker"],
-//     });
-
-//     loader.load().then(() => {
-//       if (mapRef.current) {
-//         const map = new google.maps.Map(mapRef.current, {
-//           center: coordenadas,
-//           zoom: 15,
-//         });
-
-//         new google.maps.marker.AdvancedMarkerElement({
-//           map,
-//           position: coordenadas,
-//           title: "Mercado selecionado",
-//         });
-//       }
-//     });
-//   }, [coordenadas]);
-
-//   return <div ref={mapRef} style={{ width: "100%", height: "400px" }} />;
-// };
->>>>>>> defd184af27594ee5718df29522dbd40f69b6b8b
-
-// export default MapaMercados;
+export default MapaMercados;

@@ -9,17 +9,12 @@ export interface OpcaoSelect {
 interface SelectProps {
   label: string;
   name: string;
-<<<<<<< HEAD
-  options: readonly string[];
-=======
-  options: OpcaoSelect[];
->>>>>>> defd184af27594ee5718df29522dbd40f69b6b8b
+  options: readonly (string | OpcaoSelect)[];
   value: string;
   onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   required?: boolean;
 }
 
-<<<<<<< HEAD
 const Select = ({
   label,
   name,
@@ -28,10 +23,6 @@ const Select = ({
   onChange,
   required = false,
 }: SelectProps) => {
-=======
-const Select = ({ label, name, options, value, onChange, required = false }: SelectProps) => {
-
->>>>>>> defd184af27594ee5718df29522dbd40f69b6b8b
   return (
     <div className="select-container">
       <label htmlFor={name}>{label}</label>
@@ -43,12 +34,15 @@ const Select = ({ label, name, options, value, onChange, required = false }: Sel
         required={required}
       >
         <option value="">Selecione uma opção</option>
-
-        {options.map((opcao) => (
-          <option key={opcao.valor} value={opcao.valor}>
-            {opcao.rotulo}
-          </option>
-        ))}
+        {options.map((opcao) => {
+          const valor = typeof opcao === "string" ? opcao : opcao.valor;
+          const rotulo = typeof opcao === "string" ? opcao : opcao.rotulo;
+          return (
+            <option key={valor} value={valor}>
+              {rotulo}
+            </option>
+          );
+        })}
       </select>
     </div>
   );

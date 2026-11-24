@@ -6,6 +6,17 @@ export interface Coordenadas {
 export const UNIDADES_PRODUTO = ["un", "kg", "g", "L", "ml", "pct", "cx"] as const;
 export type UnidadeProduto = (typeof UNIDADES_PRODUTO)[number];
 
+export interface Categoria {
+  _id: string;
+  nome: string;
+  descricao?: string;
+}
+
+export interface NovaCategoriaPayload {
+  nome: string;
+  descricao?: string;
+}
+
 export interface Mercado {
   _id: string;
   nome: string;
@@ -18,6 +29,15 @@ export interface Mercado {
     type: "Point";
     coordinates: [number, number];
   };
+}
+
+export interface NovoMercadoPayload {
+  nome: string;
+  endereco?: string;
+  telefone?: string;
+  horarioFuncionamento?: string;
+  logoUrl?: string;
+  coordenadas?: Coordenadas;
 }
 
 export interface Produto {

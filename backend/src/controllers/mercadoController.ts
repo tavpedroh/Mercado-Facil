@@ -81,10 +81,14 @@ export async function criarMercado(
       telefone: dados.telefone,
       horarioFuncionamento: dados.horarioFuncionamento,
       logoUrl: dados.logoUrl || undefined,
-      localizacao: {
-        type: "Point",
-        coordinates: [dados.coordenadas.lng, dados.coordenadas.lat],
-      },
+      ...(dados.coordenadas
+        ? {
+            localizacao: {
+              type: "Point",
+              coordinates: [dados.coordenadas.lng, dados.coordenadas.lat],
+            },
+          }
+        : {}),
     });
 
     res.status(201).json(novoMercado);

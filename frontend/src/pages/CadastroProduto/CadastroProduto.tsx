@@ -1,4 +1,3 @@
-import React from "react";
 import Header from "../../components/Header/Header";
 import FormularioProduto from "../../components/FormularioCadastro/FormularioProduto";
 import "./CadastroProduto.css";

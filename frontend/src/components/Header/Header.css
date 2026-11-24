@@ -1,5 +1,4 @@
 .header {
-<<<<<<< HEAD
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -17,27 +16,10 @@
 
 .titulo {
   margin: 0;
-=======
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #380f44;
-    padding: 1rem 2rem;
-    color: white;
-  }
-
-.header a {
-    color: white;
-    text-decoration: none;
-}
-  
-.titulo {
->>>>>>> defd184af27594ee5718df29522dbd40f69b6b8b
   font-size: 1.5rem;
   font-weight: bold;
 }
 
-<<<<<<< HEAD
 .navegacao ul {
   list-style: none;
   display: flex;
@@ -78,37 +60,18 @@
   font-size: 0.78rem;
   font-weight: 700;
 }
-=======
-.header nav {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-}
 
-.header nav a {
-  color: white;
-  text-decoration: none;
+.select-cadastro {
+  background-color: #2e7d32;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.92rem;
   font-weight: 500;
-}
-  
-.header nav a:hover {
-  /* text-decoration: underline; */
-  border: 1px solid white;
-  padding: 0.25rem;
-  border-radius: 4px;
+  cursor: pointer;
 }
 
-.header select {
-  background-color: #380f44;
-  color: white;
-  border: 1px solid white;
-  padding: 0.5rem;
-  border-radius: 4px;
-  font-weight: 500;
+.select-cadastro:hover {
+  background-color: #1b5e20;
 }
-
-.header select:hover {
-  background-color: #2c0b33;
-  border-color: #2c0b33;
-}
->>>>>>> defd184af27594ee5718df29522dbd40f69b6b8b

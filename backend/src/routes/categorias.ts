@@ -1,28 +1,35 @@
 import express from "express";
-import Categorias from "../models/Categorias";
+import {
+  atualizarCategoria,
+  buscarCategoriaPorId,
+  criarCategoria,
+  listarCategorias,
+  removerCategoria,
+} from "../controllers/categoriaController";
+import { validate } from "../middlewares/validate";
+import { idParamSchema } from "../validators/common";
+import {
+  atualizarCategoriaSchema,
+  criarCategoriaSchema,
+} from "../validators/categoriaValidator";
 
-const routerC = express.Router();
+const router = express.Router();
 
+router.get("/categorias", listarCategorias);
+router.get("/categorias/:id", validate(idParamSchema, "params"), buscarCategoriaPorId);
+router.post("/categorias", validate(criarCategoriaSchema, "body"), criarCategoria);
+router.put(
+  "/categorias/:id",
+  validate(idParamSchema, "params"),
+  validate(atualizarCategoriaSchema, "body"),
+  atualizarCategoria
+);
+router.patch(
+  "/categorias/:id",
+  validate(idParamSchema, "params"),
+  validate(atualizarCategoriaSchema, "body"),
+  atualizarCategoria
+);
+router.delete("/categorias/:id", validate(idParamSchema, "params"), removerCategoria);
 
-routerC.get("/categorias", async (req, res) => {
-  try {
-    const categorias = await Categorias.find();
-    res.json(categorias);
-  } catch (err) {
-    res.status(500).json({ erro: "Erro ao buscar categorias" });
-  }
-});
-
-
-routerC.post("/categorias", async (req, res) => {
-  try {
-    const novaCategoria = new Categorias(req.body);
-    await novaCategoria.save();
-    res.status(201).json(novaCategoria);
-  } catch (err) {
-    res.status(400).json({ erro: "Erro ao cadastrar mercado" });
-  }
-});
-
-
-export default routerC;
+export default router;

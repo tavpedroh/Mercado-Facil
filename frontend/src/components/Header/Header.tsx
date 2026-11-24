@@ -1,11 +1,26 @@
-<<<<<<< HEAD
-import { Link, useLocation } from "react-router";
+import type { ChangeEvent } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useListaCompras } from "../../context/ListaComprasContext";
 import "./Header.css";
 
 const Header = () => {
   const { pathname, hash } = useLocation();
+  const navigate = useNavigate();
   const { totalUnidades } = useListaCompras();
+
+  const aoMudarCadastro = (e: ChangeEvent<HTMLSelectElement>) => {
+    const destino = e.target.value;
+    if (destino) {
+      void navigate(destino);
+    }
+  };
+
+  const rotaCadastroAtual =
+    pathname === "/cadastroProduto" ||
+    pathname === "/cadastroMercado" ||
+    pathname === "/cadastroCategoria"
+      ? pathname
+      : "";
 
   return (
     <header className="header">
@@ -31,41 +46,21 @@ const Header = () => {
             </Link>
           </li>
           <li>
-            <Link to="/cadastro" className={pathname === "/cadastro" ? "ativo" : ""}>
-              Cadastrar Produto
-            </Link>
+            <select
+              className="select-cadastro"
+              aria-label="Menu de cadastros"
+              value={rotaCadastroAtual}
+              onChange={aoMudarCadastro}
+            >
+              <option value="" disabled>
+                Cadastrar...
+              </option>
+              <option value="/cadastroProduto">Cadastrar Produto</option>
+              <option value="/cadastroMercado">Cadastrar Mercado</option>
+              <option value="/cadastroCategoria">Cadastrar Categoria</option>
+            </select>
           </li>
         </ul>
-=======
-import React from "react";
-import { useNavigate } from "react-router";
-import "./Header.css";
-
-const Header = () => {
-  const navigate = useNavigate();
-
-  const aoMudarDirecionamento = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const destino = e.target.value;
-    if (destino) {
-      navigate(destino); // Transiciona a tela de forma fluida e silenciosa
-      e.target.value = "";
-    }
-  };
-
-  return (
-    <header className="header">
-      <a href="/">
-        <h1 className="titulo">Mercado Fácil</h1>
-      </a>
-      <nav>  
-        <a href="#">Maiores Ofertas</a>  
-        <select onChange={aoMudarDirecionamento} defaultValue="">
-          <option value="" disabled>Cadastrar...</option>
-          <option value="/cadastroCategoria">Cadastrar Categoria</option>
-          <option value="/cadastroMercado">Cadastrar Mercado</option>
-          <option value="/cadastroProduto">Cadastrar Produto</option>
-        </select>
->>>>>>> defd184af27594ee5718df29522dbd40f69b6b8b
       </nav>
     </header>
   );

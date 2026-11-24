@@ -53,7 +53,7 @@ const mercadoSchema = new mongoose.Schema(
     },
     localizacao: {
       type: localizacaoSchema,
-      required: true,
+      required: false,
     },
   },
   {
@@ -74,7 +74,7 @@ mercadoSchema.virtual("coordenadas").get(function () {
   };
 });
 
-mercadoSchema.index({ localizacao: "2dsphere" });
+mercadoSchema.index({ localizacao: "2dsphere" }, { sparse: true });
 
 export type MercadoDocument = InferSchemaType<typeof mercadoSchema>;
 

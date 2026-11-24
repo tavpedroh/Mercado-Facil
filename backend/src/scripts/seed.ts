@@ -1,9 +1,17 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import Categorias from "../models/Categorias";
 import Mercado from "../models/Mercado";
 import Produto from "../models/Produto";
 
 dotenv.config();
+
+const CATEGORIAS_INICIAIS = [
+  { nome: "Alimentos", descricao: "Itens básicos e mercearia" },
+  { nome: "Bebidas", descricao: "Sucos, refrigerantes e águas" },
+  { nome: "Limpeza", descricao: "Produtos de limpeza doméstica" },
+  { nome: "Higiene", descricao: "Cuidados pessoais" },
+];
 
 const MERCADOS_INICIAIS = [
   {
@@ -35,6 +43,15 @@ async function seed(): Promise<void> {
 
   await mongoose.connect(uri);
   console.log("Conectado ao MongoDB para seed...");
+
+  for (const cat of CATEGORIAS_INICIAIS) {
+    await Categorias.findOneAndUpdate(
+      { nome: cat.nome },
+      { $setOnInsert: cat },
+      { upsert: true }
+    );
+  }
+  console.log(`${CATEGORIAS_INICIAIS.length} categorias garantidas no banco.`);
 
   const mercadosPorNome = new Map<string, mongoose.Types.ObjectId>();
 

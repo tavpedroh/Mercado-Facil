@@ -1,7 +1,6 @@
-import React from "react";
 import Header from "../../components/Header/Header";
-import "./CadastroMercado.css";
 import FormularioMercado from "../../components/FormularioCadastro/FormularioMercado";
+import "./CadastroMercado.css";
 
 const CadastroMercado = () => {
   return (

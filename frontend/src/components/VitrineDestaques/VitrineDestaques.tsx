@@ -1,26 +1,38 @@
-import React from "react";
+import type { Produto as ProdutoType } from "../../types/produto";
+import { gerarChaveComparacao, type ComparacaoOferta } from "../../utils/comparador";
 import Produto from "../Produto/Produto";
 import "./VitrineDestaques.css";
-import { ProdutoData } from "../../types/index";
 
 interface VitrineDestaquesProps {
-  produtos: ProdutoData[];
+  produtos: ProdutoType[];
+  comparacoes?: Map<string, ComparacaoOferta>;
+  aoSelecionarProduto?: (produto: ProdutoType) => void;
 }
 
-const VitrineDestaques = ({ produtos }: VitrineDestaquesProps) => {
+const VitrineDestaques = ({
+  produtos,
+  comparacoes,
+  aoSelecionarProduto,
+}: VitrineDestaquesProps) => {
   const maioresOfertas = [...produtos]
-    .sort((a, b) => (b.desconto || 0) - (a.desconto || 0))
-    .slice(0, 3);
+    .filter((p) => (p.desconto ?? 0) > 0)
+    .sort((a, b) => (b.desconto ?? 0) - (a.desconto ?? 0))
+    .slice(0, 4);
 
   if (maioresOfertas.length === 0) return null;
 
   return (
-    <section className="vitrine-destaques">
+    <section className="vitrine-destaques" aria-label="Maiores ofertas">
       <h2 className="titulo-destaques">Maiores Ofertas</h2>
-      
+
       <div className="palco-deslizante">
-        {maioresOfertas.map((produto) => (
-          <Produto key={produto._id} produto={produto} />
+        {maioresOfertas.map((produto, index) => (
+          <Produto
+            key={produto._id ?? `${produto.nome}-${produto.mercado}-${index}`}
+            produto={produto}
+            comparacao={comparacoes?.get(gerarChaveComparacao(produto))}
+            aoSelecionar={aoSelecionarProduto}
+          />
         ))}
       </div>
     </section>

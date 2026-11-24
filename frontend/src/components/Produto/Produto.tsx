@@ -11,9 +11,10 @@ import "./Produto.css";
 interface ProdutoProps {
   produto: ProdutoType;
   comparacao?: ComparacaoOferta;
+  aoSelecionar?: (produto: ProdutoType) => void;
 }
 
-const Produto = ({ produto, comparacao }: ProdutoProps) => {
+const Produto = ({ produto, comparacao, aoSelecionar }: ProdutoProps) => {
   const { adicionarItem, atualizarQuantidade, obterQuantidade } = useListaCompras();
 
   const temDesconto = typeof produto.desconto === "number" && produto.desconto > 0;
@@ -35,7 +36,11 @@ const Produto = ({ produto, comparacao }: ProdutoProps) => {
   const idItem = obterIdProduto(produto);
 
   return (
-    <article className={`produto ${ehMelhorPreco ? "produto-melhor-preco" : ""}`}>
+    <article
+      className={`produto ${ehMelhorPreco ? "produto-melhor-preco" : ""}`}
+      onClick={aoSelecionar ? () => aoSelecionar(produto) : undefined}
+      style={aoSelecionar ? { cursor: "pointer" } : undefined}
+    >
       <div className="produto-topo">
         {ehMelhorPreco && (
           <span className="selo-melhor-preco">
@@ -66,7 +71,7 @@ const Produto = ({ produto, comparacao }: ProdutoProps) => {
         )}
       </div>
 
-      <div className="produto-acoes">
+      <div className="produto-acoes" onClick={(e) => e.stopPropagation()}>
         {quantidadeNaLista === 0 ? (
           <button
             type="button"

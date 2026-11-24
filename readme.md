@@ -4,11 +4,11 @@ Aplicação full-stack para consulta de ofertas de supermercados (folheto digita
 
 ## Funcionalidades
 
-- **Folheto interativo:** busca por nome/marca/descrição, filtros por categoria, mercado e *"Só promoções"*, além de ordenação por mais recentes, menor preço, maior preço e maior desconto.
-- **Comparador de preços:** identifica automaticamente produtos equivalentes em mercados diferentes, destaca o selo *"Melhor preço"* e mostra a economia obtida.
+- **Folheto interativo:** vitrine de *"Maiores Ofertas"*, busca por nome/marca/descrição, filtros por categoria, mercado e *"Só promoções"*, além de ordenação por mais recentes, preço, desconto e nome (A-Z / Z-A).
+- **Comparador de preços e detalhes do produto:** identifica automaticamente produtos equivalentes em mercados diferentes, destaca o selo *"Melhor preço"* e abre um diálogo detalhado ao clicar em qualquer produto comparando todos os mercados.
 - **Lista de compras inteligente (`/lista`):** persistida em `localStorage`, permite ajustar quantidades e simula tanto o custo da compra completa em um único mercado quanto o **Plano Econômico** (menor preço item a item).
 - **Mapa com múltiplos mercados e geolocalização:** exibe todos os mercados simultaneamente com `InfoWindow` detalhado, calcula distâncias em km usando a localização do usuário e filtra ofertas ao clicar em um mercado.
-- **Cadastro de produtos (`/cadastro`):** validação de preço/desconto, prévia do preço final e vínculo automático com mercados da API.
+- **Cadastros completos (`/cadastroProduto`, `/cadastroMercado`, `/cadastroCategoria`):** formulários validados para produtos, mercados (com coordenadas opcionais) e categorias integrados à API.
 
 ## Tecnologias
 
@@ -96,6 +96,13 @@ npm run dev:frontend
 ### Status
 - `GET /` — informações básicas da API
 - `GET /health` — status da API e conexão com o MongoDB
+
+### Categorias
+- `GET /categorias` — lista todas as categorias ordenadas por nome
+- `GET /categorias/:id` — busca uma categoria por ID
+- `POST /categorias` — cadastra uma nova categoria (`nome`, `descricao`)
+- `PUT /categorias/:id` e `PATCH /categorias/:id` — atualiza uma categoria
+- `DELETE /categorias/:id` — remove uma categoria
 
 ### Mercados
 - `GET /mercados` — lista mercados (suporta `?busca=`, `?lat=&lng=&raioKm=10` por proximidade)

@@ -4,69 +4,127 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.45);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 .dialog-caixa {
   background: #ffffff;
-  padding: 30px;
+  padding: 1.75rem;
   border-radius: 12px;
-  max-width: 500px;
-  width: 90%;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
   position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
 }
 
 .dialog-fechar {
   position: absolute;
-  top: 15px;
-  right: 15px;
+  top: 12px;
+  right: 14px;
   background: none;
   border: none;
   font-size: 1.8rem;
+  line-height: 1;
   cursor: pointer;
-  color: #888;
+  color: #666;
+}
+
+.dialog-fechar:hover {
+  color: #222;
 }
 
 .dialog-categoria {
   font-size: 0.8rem;
   text-transform: uppercase;
-  color: #0070f3;
-  font-weight: 600;
+  color: #2e7d32;
+  font-weight: 700;
+}
+
+.dialog-caixa h2 {
+  margin: 0.35rem 0 0.5rem;
+}
+
+.dialog-descricao {
+  margin: 0 0 1.25rem;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.dialog-secao-precos h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
 }
 
 .lista-comparativa {
   list-style: none;
   padding: 0;
-  margin: 15px 0 0 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .lista-comparativa li {
   display: flex;
   justify-content: space-between;
-  padding: 12px;
-  border-bottom: 1px solid #eaeaea;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background-color: #fafafa;
+  border: 1px solid #ececec;
 }
 
 .item-atual {
-  background-color: #f0f7ff;
-  border-radius: 6px;
-  border-left: 4px solid #0070f3;
+  background-color: #e8f5e9 !important;
+  border-color: #a5d6a7 !important;
+  border-left: 4px solid #2e7d32 !important;
+}
+
+.mercado-nome {
+  display: block;
+  font-weight: 600;
 }
 
 .tag-melhor {
-  color: #2e7d32;
+  color: #1b5e20;
   font-size: 0.8rem;
-  margin-left: 5px;
+  margin-left: 6px;
+}
+
+.mercado-preco {
+  margin-top: 0.2rem;
+  font-size: 0.95rem;
+  color: #2e7d32;
 }
 
 .preco-riscado {
   text-decoration: line-through;
   color: #999;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   margin-right: 8px;
+}
+
+.btn-dialog-add {
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  border: none;
+  background-color: #4caf50;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.btn-dialog-add:hover {
+  background-color: #388e3c;
 }

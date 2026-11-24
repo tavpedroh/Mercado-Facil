@@ -11,7 +11,7 @@ export const criarMercadoSchema = z.object({
   telefone: z.string().trim().max(30).optional(),
   horarioFuncionamento: z.string().trim().max(120).optional(),
   logoUrl: z.url("URL do logo inválida.").optional().or(z.literal("")),
-  coordenadas: coordenadasSchema,
+  coordenadas: coordenadasSchema.optional(),
 });
 
 export const atualizarMercadoSchema = criarMercadoSchema

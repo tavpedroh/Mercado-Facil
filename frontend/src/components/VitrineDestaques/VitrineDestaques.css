@@ -1,30 +1,22 @@
 .vitrine-destaques {
-  margin: 20px 0;
-  padding: 10px;
-  
+  padding: 1.25rem 2rem 0.5rem;
 }
 
 .titulo-destaques {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-  color: #333;
+  font-size: 1.4rem;
+  margin: 0 0 0.85rem;
+  color: #1b5e20;
 }
 
 .palco-deslizante {
   display: flex;
-  gap: 20px;
-  /* Permite que o excesso deslize horizontalmente */
+  gap: 1rem;
   overflow-x: auto;
-  /* Suaviza o movimento do deslizamento */
   scroll-behavior: smooth;
-  /* Garante que o leitor possa arrastar o conteúdo na tela */
   -webkit-overflow-scrolling: touch;
-  padding-bottom: 10px; 
-  /* height: 100%;
-  width: 100%;  */
+  padding-bottom: 0.5rem;
 }
 
-/* Oculta o trilho de rolagem para manter a estética limpa */
-.palco-deslizante::-webkit-scrollbar {
-  display: none;
+.palco-deslizante > * {
+  flex: 0 0 auto;
 }
