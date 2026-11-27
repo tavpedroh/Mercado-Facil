@@ -9,6 +9,11 @@ import {
   formatarMoeda,
   gerarChaveComparacao,
 } from "../utils/comparador";
+import {
+  analisarOrcamento,
+  exportarListaParaTexto,
+  otimizarPorLimiteMercados,
+} from "../utils/otimizadorLista";
 import "./ListaCompras.css";
 
 interface SimulacaoMercado {
@@ -22,6 +27,10 @@ const ListaCompras = () => {
   const { itens, totalUnidades, atualizarQuantidade, removerItem, limparLista } =
     useListaCompras();
   const [catalogo, setCatalogo] = useState<Produto[]>([]);
+  const [orcamentoInput, setOrcamentoInput] = useState("");
+  const [maxMercados, setMaxMercados] = useState(2);
+  const [statusExportacao, setStatusExportacao] = useState<string | null>(null);
+  const [textoExportado, setTextoExportado] = useState<string | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -41,6 +50,19 @@ const ListaCompras = () => {
       ),
     [itens]
   );
+
+  const analiseOrcamento = useMemo(() => {
+    const valor = Number(orcamentoInput);
+    if (!orcamentoInput.trim() || Number.isNaN(valor) || valor <= 0) {
+      return null;
+    }
+    return analisarOrcamento(itens, valor);
+  }, [itens, orcamentoInput]);
+
+  const otimizacaoMercados = useMemo(() => {
+    const baseCatalogo = catalogo.length > 0 ? catalogo : itens.map((i) => i.produto);
+    return otimizarPorLimiteMercados(itens, baseCatalogo, maxMercados);
+  }, [itens, catalogo, maxMercados]);
 
   const analiseEconomia = useMemo(() => {
     if (itens.length === 0) {
@@ -130,6 +152,17 @@ const ListaCompras = () => {
     };
   }, [itens, catalogo, totalAtual]);
 
+  const handleExportarLista = async () => {
+    const texto = exportarListaParaTexto(itens, "Minha Lista - Mercado Fácil");
+    setTextoExportado(texto);
+    try {
+      await navigator.clipboard.writeText(texto);
+      setStatusExportacao("Lista copiada para a área de transferência!");
+    } catch {
+      setStatusExportacao("Texto gerado abaixo — copie manualmente.");
+    }
+  };
+
   return (
     <div className="lista-compras-page">
       <Header />
@@ -145,11 +178,32 @@ const ListaCompras = () => {
             </p>
           </div>
           {itens.length > 0 && (
-            <button type="button" className="btn-limpar-lista" onClick={limparLista}>
-              Limpar lista
-            </button>
+            <div className="lista-topo-acoes">
+              <button
+                type="button"
+                className="btn-exportar-lista"
+                onClick={() => void handleExportarLista()}
+              >
+                Exportar / Copiar lista
+              </button>
+              <button type="button" className="btn-limpar-lista" onClick={limparLista}>
+                Limpar lista
+              </button>
+            </div>
           )}
         </div>
+
+        {statusExportacao && textoExportado && itens.length > 0 && (
+          <div className="exportacao-box">
+            <div className="exportacao-cabecalho">
+              <strong>{statusExportacao}</strong>
+              <button type="button" onClick={() => setTextoExportado(null)}>
+                Fechar
+              </button>
+            </div>
+            <pre>{textoExportado}</pre>
+          </div>
+        )}
 
         {itens.length === 0 ? (
           <div className="lista-vazia">
@@ -232,6 +286,67 @@ const ListaCompras = () => {
                   </p>
                 )}
               </div>
+
+              <div className="resumo-card">
+                <h3>Controle de Orçamento</h3>
+                <label className="campo-orcamento">
+                  <span>Orçamento máximo (R$):</span>
+                  <input
+                    type="number"
+                    min="1"
+                    step="5"
+                    placeholder="Ex.: 150"
+                    value={orcamentoInput}
+                    onChange={(e) => setOrcamentoInput(e.target.value)}
+                  />
+                </label>
+
+                {analiseOrcamento && (
+                  <div className="orcamento-status">
+                    <div className="orcamento-barra">
+                      <div
+                        className={`orcamento-progresso ${
+                          analiseOrcamento.dentroDoOrcamento ? "ok" : "excedido"
+                        }`}
+                        style={{
+                          width: `${Math.min(100, analiseOrcamento.percentualUtilizado)}%`,
+                        }}
+                      />
+                    </div>
+                    <p
+                      className={`orcamento-texto ${
+                        analiseOrcamento.dentroDoOrcamento ? "ok" : "excedido"
+                      }`}
+                    >
+                      {analiseOrcamento.dentroDoOrcamento
+                        ? `Dentro do orçamento (${analiseOrcamento.percentualUtilizado}%) · restam ${formatarMoeda(analiseOrcamento.saldoOuExcesso)}`
+                        : `Acima do orçamento (${analiseOrcamento.percentualUtilizado}%) · excede em ${formatarMoeda(analiseOrcamento.saldoOuExcesso)}`}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {otimizacaoMercados.mercadosSelecionados.length > 0 && (
+                <div className="resumo-card">
+                  <div className="otimizador-topo">
+                    <h3>Rota Econômica</h3>
+                    <select
+                      aria-label="Limite de mercados"
+                      value={maxMercados}
+                      onChange={(e) => setMaxMercados(Number(e.target.value))}
+                    >
+                      <option value={1}>Até 1 mercado</option>
+                      <option value={2}>Até 2 mercados</option>
+                      <option value={3}>Até 3 mercados</option>
+                    </select>
+                  </div>
+                  <p className="otimizador-resumo">
+                    <strong>{otimizacaoMercados.mercadosSelecionados.join(" + ")}</strong> ·{" "}
+                    {otimizacaoMercados.itensEncontrados}/{otimizacaoMercados.totalItens} item(ns) ·{" "}
+                    <strong>{formatarMoeda(otimizacaoMercados.total)}</strong>
+                  </p>
+                </div>
+              )}
 
               {analiseEconomia.simulacoesPorMercado.length > 0 && (
                 <div className="resumo-card">

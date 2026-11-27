@@ -1,12 +1,16 @@
 import type {
+  AlertaDisparado,
+  AlertaPreco,
   Categoria,
   FiltrosProdutosQuery,
   Mercado,
   NovaCategoriaPayload,
+  NovoAlertaPayload,
   NovoMercadoPayload,
   NovoProdutoPayload,
   Produto,
   RespostaProdutos,
+  ResumoEstatisticas,
 } from "../types/produto";
 
 const API_BASE_URL = (import.meta.env?.VITE_API_URL || "http://localhost:3000").replace(/\/$/, "");
@@ -120,4 +124,35 @@ export async function cadastrarCategoria(categoria: NovaCategoriaPayload): Promi
     body: JSON.stringify(categoria),
   });
   return handleResponse<Categoria>(response, "Erro ao cadastrar categoria");
+}
+
+export async function listarAlertas(signal?: AbortSignal): Promise<AlertaPreco[]> {
+  const response = await fetch(`${API_BASE_URL}/alertas`, { signal });
+  return handleResponse<AlertaPreco[]>(response, "Erro ao buscar alertas");
+}
+
+export async function listarAlertasDisparados(signal?: AbortSignal): Promise<AlertaDisparado[]> {
+  const response = await fetch(`${API_BASE_URL}/alertas/disparados`, { signal });
+  return handleResponse<AlertaDisparado[]>(response, "Erro ao verificar alertas disparados");
+}
+
+export async function cadastrarAlerta(alerta: NovoAlertaPayload): Promise<AlertaPreco> {
+  const response = await fetch(`${API_BASE_URL}/alertas`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(alerta),
+  });
+  return handleResponse<AlertaPreco>(response, "Erro ao cadastrar alerta");
+}
+
+export async function removerAlerta(id: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/alertas/${id}`, {
+    method: "DELETE",
+  });
+  await handleResponse<void>(response, "Erro ao remover alerta");
+}
+
+export async function obterResumoEstatisticas(signal?: AbortSignal): Promise<ResumoEstatisticas> {
+  const response = await fetch(`${API_BASE_URL}/estatisticas/resumo`, { signal });
+  return handleResponse<ResumoEstatisticas>(response, "Erro ao carregar estatísticas");
 }

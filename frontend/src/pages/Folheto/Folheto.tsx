@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { useLocation } from "react-router";
 import Header from "../../components/Header/Header";
 import VitrineDestaques from "../../components/VitrineDestaques/VitrineDestaques";
@@ -12,12 +12,28 @@ import {
   COORDENADAS_PADRAO,
   MERCADOS as MERCADOS_PADRAO,
 } from "../../constants/mercados";
-import { listarCategorias, listarMercados, listarProdutos } from "../../services/api";
-import type { Categoria, Coordenadas, Mercado, Produto } from "../../types/produto";
+import { useFavoritos } from "../../context/FavoritosContext";
 import {
-  calcularPrecoFinal,
+  cadastrarAlerta,
+  listarAlertasDisparados,
+  listarCategorias,
+  listarMercados,
+  listarProdutos,
+  obterResumoEstatisticas,
+} from "../../services/api";
+import type {
+  AlertaDisparado,
+  Categoria,
+  Coordenadas,
+  Mercado,
+  Produto,
+  ResumoEstatisticas,
+} from "../../types/produto";
+import {
   construirMapaComparacoes,
+  formatarMoeda,
 } from "../../utils/comparador";
+import { filtrarEOrdenarOfertas } from "../../utils/filtrosOfertas";
 import "./Folheto.css";
 
 const FILTROS_INICIAIS: EstadoFiltros = {
@@ -26,6 +42,10 @@ const FILTROS_INICIAIS: EstadoFiltros = {
   mercado: "",
   ordenar: "recentes",
   apenasPromocoes: false,
+  apenasAtivas: false,
+  apenasFavoritos: false,
+  precoMin: "",
+  precoMax: "",
 };
 
 function extrairCoordenadasMercado(mercado: Mercado): Coordenadas | undefined {
@@ -39,35 +59,41 @@ function extrairCoordenadasMercado(mercado: Mercado): Coordenadas | undefined {
   return undefined;
 }
 
-function normalizarTexto(texto: string): string {
-  return texto
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-}
-
 function Folheto() {
   const { hash } = useLocation();
+  const { favoritosIds, totalFavoritos } = useFavoritos();
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [mercadosApi, setMercadosApi] = useState<Mercado[]>([]);
   const [categoriasApi, setCategoriasApi] = useState<Categoria[]>([]);
+  const [estatisticas, setEstatisticas] = useState<ResumoEstatisticas | null>(null);
+  const [alertasDisparados, setAlertasDisparados] = useState<AlertaDisparado[]>([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
   const [filtros, setFiltros] = useState<EstadoFiltros>(FILTROS_INICIAIS);
   const [produtoDetalhe, setProdutoDetalhe] = useState<Produto | null>(null);
 
+  const [alertaTermo, setAlertaTermo] = useState("");
+  const [alertaPreco, setAlertaPreco] = useState("");
+  const [salvandoAlerta, setSalvandoAlerta] = useState(false);
+  const [feedbackAlerta, setFeedbackAlerta] = useState<string | null>(null);
+
   const carregarDados = useCallback(async (signal?: AbortSignal) => {
     setCarregando(true);
     setErro(null);
     try {
-      const [dadosProdutos, dadosMercados, dadosCategorias] = await Promise.all([
-        listarProdutos({ limit: 100 }, signal),
-        listarMercados(signal).catch(() => [] as Mercado[]),
-        listarCategorias(signal).catch(() => [] as Categoria[]),
-      ]);
+      const [dadosProdutos, dadosMercados, dadosCategorias, dadosStats, dadosAlertas] =
+        await Promise.all([
+          listarProdutos({ limit: 100 }, signal),
+          listarMercados(signal).catch(() => [] as Mercado[]),
+          listarCategorias(signal).catch(() => [] as Categoria[]),
+          obterResumoEstatisticas(signal).catch(() => null),
+          listarAlertasDisparados(signal).catch(() => [] as AlertaDisparado[]),
+        ]);
       setProdutos(dadosProdutos);
       setMercadosApi(dadosMercados);
       setCategoriasApi(dadosCategorias);
+      setEstatisticas(dadosStats);
+      setAlertasDisparados(dadosAlertas);
     } catch (err) {
       if (err instanceof DOMException && err.name === "AbortError") {
         return;
@@ -118,45 +144,22 @@ function Folheto() {
   );
 
   const produtosFiltrados = useMemo(() => {
-    const termoBusca = normalizarTexto(filtros.busca.trim());
+    const precoMinNum = filtros.precoMin.trim() !== "" ? Number(filtros.precoMin) : undefined;
+    const precoMaxNum = filtros.precoMax.trim() !== "" ? Number(filtros.precoMax) : undefined;
 
-    const filtrados = produtos.filter((produto) => {
-      const categoriaProduto = produto.categoria || "Sem categoria";
-      if (filtros.categoria && categoriaProduto !== filtros.categoria) return false;
-      if (filtros.mercado && produto.mercado !== filtros.mercado) return false;
-      if (filtros.apenasPromocoes && !(produto.desconto && produto.desconto > 0)) return false;
-
-      if (termoBusca) {
-        const textoAlvo = normalizarTexto(
-          `${produto.nome} ${produto.marca ?? ""} ${produto.descricao ?? ""} ${produto.mercado}`
-        );
-        if (!textoAlvo.includes(termoBusca)) return false;
-      }
-
-      return true;
+    return filtrarEOrdenarOfertas(produtos, {
+      busca: filtros.busca,
+      categoria: filtros.categoria || undefined,
+      mercado: filtros.mercado || undefined,
+      apenasPromocoes: filtros.apenasPromocoes,
+      apenasAtivas: filtros.apenasAtivas,
+      apenasFavoritos: filtros.apenasFavoritos,
+      favoritosIds,
+      precoMin: precoMinNum !== undefined && !Number.isNaN(precoMinNum) ? precoMinNum : undefined,
+      precoMax: precoMaxNum !== undefined && !Number.isNaN(precoMaxNum) ? precoMaxNum : undefined,
+      ordenar: filtros.ordenar,
     });
-
-    return [...filtrados].sort((a, b) => {
-      if (filtros.ordenar === "menor_preco") {
-        return calcularPrecoFinal(a) - calcularPrecoFinal(b);
-      }
-      if (filtros.ordenar === "maior_preco") {
-        return calcularPrecoFinal(b) - calcularPrecoFinal(a);
-      }
-      if (filtros.ordenar === "maior_desconto") {
-        return (b.desconto ?? 0) - (a.desconto ?? 0);
-      }
-      if (filtros.ordenar === "nome_asc") {
-        return a.nome.localeCompare(b.nome, "pt-BR");
-      }
-      if (filtros.ordenar === "nome_desc") {
-        return b.nome.localeCompare(a.nome, "pt-BR");
-      }
-      const dataA = a.criadoEm ? new Date(a.criadoEm).getTime() : 0;
-      const dataB = b.criadoEm ? new Date(b.criadoEm).getTime() : 0;
-      return dataB - dataA;
-    });
-  }, [produtos, filtros]);
+  }, [produtos, filtros, favoritosIds]);
 
   const mercadosNoMapa = useMemo<MercadoNoMapa[]>(() => {
     return mercadosDisponiveis
@@ -198,6 +201,35 @@ function Folheto() {
     setFiltros((prev) => ({ ...prev, mercado: nomeMercado }));
   }, []);
 
+  const handleCriarAlerta = async (e: FormEvent) => {
+    e.preventDefault();
+    const precoAlvo = Number(alertaPreco);
+    if (alertaTermo.trim().length < 2 || Number.isNaN(precoAlvo) || precoAlvo <= 0) {
+      setFeedbackAlerta("Informe o nome do produto e um preço-alvo válido.");
+      return;
+    }
+
+    setSalvandoAlerta(true);
+    setFeedbackAlerta(null);
+    try {
+      await cadastrarAlerta({
+        termoProduto: alertaTermo.trim(),
+        precoAlvo,
+      });
+      setAlertaTermo("");
+      setAlertaPreco("");
+      const atualizados = await listarAlertasDisparados().catch(() => alertasDisparados);
+      setAlertasDisparados(atualizados);
+      setFeedbackAlerta("Alerta de preço-alvo salvo com sucesso!");
+    } catch (err) {
+      setFeedbackAlerta(err instanceof Error ? err.message : "Erro ao salvar alerta.");
+    } finally {
+      setSalvandoAlerta(false);
+    }
+  };
+
+  const mercadoDestaque = estatisticas?.rankingMercados[0];
+
   return (
     <div className="folheto-page">
       <Header />
@@ -206,6 +238,7 @@ function Folheto() {
         categorias={categorias}
         mercados={mercadosDisponiveis}
         totalResultados={produtosFiltrados.length}
+        totalFavoritos={totalFavoritos}
         onChange={setFiltros}
         onLimpar={() => setFiltros(FILTROS_INICIAIS)}
       />
@@ -222,13 +255,86 @@ function Folheto() {
           </div>
         ) : (
           <>
-            {!filtros.busca && !filtros.categoria && !filtros.mercado && (
-              <VitrineDestaques
-                produtos={produtos}
-                comparacoes={comparacoes}
-                aoSelecionarProduto={setProdutoDetalhe}
-              />
+            {(estatisticas || alertasDisparados.length > 0) && (
+              <section className="painel-insights" aria-label="Resumo de economia e alertas">
+                {estatisticas && (
+                  <div className="insights-metricas">
+                    <div className="metrica-card">
+                      <span>Ofertas ativas</span>
+                      <strong>{estatisticas.totalOfertasAtivas}</strong>
+                    </div>
+                    <div className="metrica-card">
+                      <span>Desconto médio</span>
+                      <strong>{estatisticas.descontoMedio}%</strong>
+                    </div>
+                    {mercadoDestaque && (
+                      <div className="metrica-card">
+                        <span>Destaque em descontos</span>
+                        <strong>{mercadoDestaque.mercado}</strong>
+                      </div>
+                    )}
+                    <div className="metrica-card">
+                      <span>Alertas atingidos</span>
+                      <strong>{alertasDisparados.length}</strong>
+                    </div>
+                  </div>
+                )}
+
+                {alertasDisparados.length > 0 && (
+                  <div className="alertas-disparados-box">
+                    <strong>Alertas de preço atingidos:</strong>
+                    <ul>
+                      {alertasDisparados.slice(0, 3).map((item) => (
+                        <li key={item.alerta._id}>
+                          <span>
+                            {item.alerta.termoProduto} (alvo{" "}
+                            {formatarMoeda(item.alerta.precoAlvo)})
+                          </span>
+                          <strong>
+                            Melhor oferta: {formatarMoeda(item.melhorPreco)}
+                          </strong>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <form className="form-alerta-rapido" onSubmit={(e) => void handleCriarAlerta(e)}>
+                  <span>Criar alerta de preço-alvo:</span>
+                  <input
+                    type="text"
+                    placeholder="Ex.: Arroz 5kg"
+                    value={alertaTermo}
+                    onChange={(e) => setAlertaTermo(e.target.value)}
+                    aria-label="Produto para alerta de preço"
+                  />
+                  <input
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="Preço-alvo R$"
+                    value={alertaPreco}
+                    onChange={(e) => setAlertaPreco(e.target.value)}
+                    aria-label="Preço-alvo em reais"
+                  />
+                  <button type="submit" disabled={salvandoAlerta}>
+                    {salvandoAlerta ? "Salvando..." : "Criar alerta"}
+                  </button>
+                  {feedbackAlerta && <small className="feedback-alerta">{feedbackAlerta}</small>}
+                </form>
+              </section>
             )}
+
+            {!filtros.busca &&
+              !filtros.categoria &&
+              !filtros.mercado &&
+              !filtros.apenasFavoritos && (
+                <VitrineDestaques
+                  produtos={produtos}
+                  comparacoes={comparacoes}
+                  aoSelecionarProduto={setProdutoDetalhe}
+                />
+              )}
             {!filtros.mercado && comparacoes.size > 0 && (
               <ComparadorOfertas comparacoes={Array.from(comparacoes.values())} />
             )}

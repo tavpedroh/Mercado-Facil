@@ -96,3 +96,60 @@ export interface FiltrosProdutosQuery {
   page?: number;
   limit?: number;
 }
+
+export interface AlertaPreco {
+  _id: string;
+  termoProduto: string;
+  precoAlvo: number;
+  categoria?: string;
+  mercadoPreferido?: string;
+  email?: string;
+  ativo: boolean;
+}
+
+export interface NovoAlertaPayload {
+  termoProduto: string;
+  precoAlvo: number;
+  categoria?: string;
+  mercadoPreferido?: string;
+  email?: string;
+  ativo?: boolean;
+}
+
+export interface AlertaDisparado {
+  alerta: AlertaPreco;
+  melhorPreco: number;
+  ofertasCompativeis: Array<{
+    _id?: string;
+    nome: string;
+    marca?: string;
+    mercado: string;
+    categoria: string;
+    preco: number;
+    desconto: number;
+    precoFinal: number;
+    validadeOferta: string | null;
+  }>;
+}
+
+export interface ResumoEstatisticas {
+  totalProdutos: number;
+  totalOfertasAtivas: number;
+  totalComDesconto: number;
+  totalMercados: number;
+  totalCategorias: number;
+  descontoMedio: number;
+  maioresDescontos: Array<{
+    nome?: string;
+    categoria: string;
+    mercado: string;
+    desconto: number;
+  }>;
+  porCategoria: Array<{ categoria: string; total: number; precoMedio: number }>;
+  rankingMercados: Array<{
+    mercado: string;
+    totalOfertas: number;
+    descontoMedio: number;
+    precoMedio: number;
+  }>;
+}

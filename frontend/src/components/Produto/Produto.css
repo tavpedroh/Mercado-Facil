@@ -25,13 +25,90 @@
 
 .selo-melhor-preco {
   display: inline-block;
-  margin-bottom: 0.45rem;
-  padding: 0.2rem 0.55rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 999px;
   background-color: #e8f5e9;
   color: #1b5e20;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
+}
+
+.produto-badges-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.produto-selos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.selo-score {
+  display: inline-block;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  background-color: #e3f2fd;
+  color: #1565c0;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.btn-favorito {
+  background: none;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1;
+  color: #888;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+}
+
+.btn-favorito:hover,
+.btn-favorito.ativo {
+  color: #c62828;
+  border-color: #ef9a9a;
+  background-color: #ffebee;
+}
+
+.selo-validade {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.selo-validade.validade-expirada {
+  background-color: #ffebee;
+  color: #b71c1c;
+}
+
+.selo-validade.validade-expira_hoje {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.selo-validade.validade-ultimos_dias {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+.preco-unitario-base {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  color: #555;
 }
 
 .produto h3 {

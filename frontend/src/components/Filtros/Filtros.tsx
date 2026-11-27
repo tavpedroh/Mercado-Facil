@@ -14,6 +14,10 @@ export interface EstadoFiltros {
   mercado: string;
   ordenar: OrdenacaoOfertas;
   apenasPromocoes: boolean;
+  apenasAtivas: boolean;
+  apenasFavoritos: boolean;
+  precoMin: string;
+  precoMax: string;
 }
 
 interface FiltrosProps {
@@ -21,6 +25,7 @@ interface FiltrosProps {
   categorias: string[];
   mercados: string[];
   totalResultados: number;
+  totalFavoritos?: number;
   onChange: (novosFiltros: EstadoFiltros) => void;
   onLimpar: () => void;
 }
@@ -30,6 +35,7 @@ const Filtros = ({
   categorias,
   mercados,
   totalResultados,
+  totalFavoritos = 0,
   onChange,
   onLimpar,
 }: FiltrosProps) => {
@@ -38,6 +44,10 @@ const Filtros = ({
       filtros.categoria ||
       filtros.mercado ||
       filtros.apenasPromocoes ||
+      filtros.apenasAtivas ||
+      filtros.apenasFavoritos ||
+      filtros.precoMin.trim() ||
+      filtros.precoMax.trim() ||
       filtros.ordenar !== "recentes"
   );
 
@@ -94,6 +104,30 @@ const Filtros = ({
           <option value="nome_desc">Nome: Z ao A</option>
         </select>
 
+        <div className="faixa-preco" aria-label="Filtrar por faixa de preço">
+          <input
+            type="number"
+            min="0"
+            step="0.5"
+            className="campo-preco"
+            aria-label="Preço mínimo"
+            placeholder="Mín R$"
+            value={filtros.precoMin}
+            onChange={(e) => onChange({ ...filtros, precoMin: e.target.value })}
+          />
+          <span>–</span>
+          <input
+            type="number"
+            min="0"
+            step="0.5"
+            className="campo-preco"
+            aria-label="Preço máximo"
+            placeholder="Máx R$"
+            value={filtros.precoMax}
+            onChange={(e) => onChange({ ...filtros, precoMax: e.target.value })}
+          />
+        </div>
+
         <label className="checkbox-promocoes">
           <input
             type="checkbox"
@@ -103,6 +137,28 @@ const Filtros = ({
             }
           />
           Só promoções
+        </label>
+
+        <label className="checkbox-promocoes">
+          <input
+            type="checkbox"
+            checked={filtros.apenasAtivas}
+            onChange={(e) =>
+              onChange({ ...filtros, apenasAtivas: e.target.checked })
+            }
+          />
+          Só ativas
+        </label>
+
+        <label className="checkbox-promocoes">
+          <input
+            type="checkbox"
+            checked={filtros.apenasFavoritos}
+            onChange={(e) =>
+              onChange({ ...filtros, apenasFavoritos: e.target.checked })
+            }
+          />
+          Favoritos{totalFavoritos > 0 ? ` (${totalFavoritos})` : ""}
         </label>
 
         {temFiltroAtivo && (

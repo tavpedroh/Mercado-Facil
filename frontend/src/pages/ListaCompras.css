@@ -245,3 +245,135 @@
   font-style: normal;
   font-size: 0.82rem;
 }
+
+.lista-topo-acoes {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.btn-exportar-lista {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #2e7d32;
+  background-color: #2e7d32;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-exportar-lista:hover {
+  background-color: #1b5e20;
+}
+
+.exportacao-box {
+  background-color: #f4faf4;
+  border: 1px solid #c8e6c9;
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.exportacao-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  color: #1b5e20;
+}
+
+.exportacao-cabecalho button {
+  background: none;
+  border: 1px solid #2e7d32;
+  color: #2e7d32;
+  border-radius: 6px;
+  padding: 0.2rem 0.6rem;
+  cursor: pointer;
+}
+
+.exportacao-box pre {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: 0.88rem;
+  color: #333;
+}
+
+.campo-orcamento {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.campo-orcamento input {
+  width: 110px;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.92rem;
+}
+
+.orcamento-status {
+  margin-top: 0.75rem;
+}
+
+.orcamento-barra {
+  height: 8px;
+  background-color: #eee;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.orcamento-progresso {
+  height: 100%;
+  transition: width 0.25s ease;
+}
+
+.orcamento-progresso.ok {
+  background-color: #4caf50;
+}
+
+.orcamento-progresso.excedido {
+  background-color: #c62828;
+}
+
+.orcamento-texto {
+  margin: 0.45rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.orcamento-texto.ok {
+  color: #1b5e20;
+}
+
+.orcamento-texto.excedido {
+  color: #c62828;
+}
+
+.otimizador-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.otimizador-topo h3 {
+  margin: 0;
+}
+
+.otimizador-topo select {
+  padding: 0.3rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.85rem;
+}
+
+.otimizador-resumo {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #333;
+}
