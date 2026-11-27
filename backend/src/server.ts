@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 import categoriasRouter from "./routes/categorias";
 import mercadosRouter from "./routes/mercados";
 import produtosRouter from "./routes/produtos";
+import alertasRouter from "./routes/alertas";
+import estatisticasRouter from "./routes/estatisticas";
 import { errorHandler, notFoundHandler } from "./middlewares/errorHandler";
 
 dotenv.config();
@@ -27,7 +29,7 @@ app.use(express.json({ limit: "1mb" }));
 app.get("/", (_req, res) => {
   res.json({
     mensagem: "API do Sistema Mercado Fácil está rodando!",
-    endpoints: ["/health", "/categorias", "/mercados", "/produtos"],
+    endpoints: ["/health", "/categorias", "/mercados", "/produtos", "/alertas", "/estatisticas/resumo"],
   });
 });
 
@@ -43,6 +45,8 @@ app.get("/health", (_req, res) => {
 app.use(categoriasRouter);
 app.use(mercadosRouter);
 app.use(produtosRouter);
+app.use(alertasRouter);
+app.use(estatisticasRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
