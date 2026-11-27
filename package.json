@@ -11,6 +11,14 @@
     "build:backend": "npm --prefix backend run build",
     "build:frontend": "npm --prefix frontend run build",
     "build": "npm run build:backend && npm run build:frontend",
-    "lint": "npm --prefix frontend run lint"
+    "lint": "npm --prefix frontend run lint",
+    "test:backend": "npm --prefix backend run test",
+    "test:frontend": "npm --prefix frontend run test",
+    "test": "npm run test:backend && npm run test:frontend",
+    "ai:status": "node scripts/local-ai-manager.mjs status",
+    "ai:tasks": "node scripts/local-ai-manager.mjs tasks",
+    "ai:generate": "node scripts/local-ai-manager.mjs generate --all",
+    "ai:features:tasks": "node scripts/local-ai-manager.mjs --file tarefas-funcionalidades.json tasks",
+    "ai:features:generate": "node scripts/local-ai-manager.mjs --file tarefas-funcionalidades.json generate --all --concurrency 2"
   }
 }

@@ -3,6 +3,7 @@ node_modules/
 
 # Build outputs
 dist/
+dist-tests/
 build/
 
 # Environment files
@@ -24,3 +25,11 @@ pnpm-debug.log*
 .idea/
 .DS_Store
 Thumbs.db
+
+TAREFAS_FUNCIONALIDADES.md
+TAREFAS_TESTES.md
+
+tarefas-funcionalidades.json
+tarefas-testes.json
+
+scripts/*
